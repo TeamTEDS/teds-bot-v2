@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Client, IntentsBitField } = require("discord.js");
 
 const tedsbot = new Client({
@@ -13,6 +14,20 @@ const tedsbot = new Client({
     IntentsBitField.Flags.GuildWebhooks,
     IntentsBitField.Flags.MessageContent,
   ],
+});
+
+client = tedsbot;
+
+tedsbot.on("ready", (c) => {
+  console.log(`✅ ${c.user.tag} is online`);
+});
+
+client.on("interactionCreate", (interaction) => {
+  if (interaction.isChatInputCommand()) {
+    if (interaction.commandName === "ping") {
+      interaction.reply("Pong!");
+    }
+  }
 });
 
 tedsbot.login(process.env.TOKEN);
