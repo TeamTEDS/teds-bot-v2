@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "register-cmd": "node src/register-commands.js"
+    "register-cmd": "node src/register-commands.js",
+    "send-self-roles": "node src/send-message.js"
   },
   "keywords": [],
   "author": "",

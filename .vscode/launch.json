@@ -21,6 +21,15 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\src\\register-commands.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Send Self Roles",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\src\\send-message.js"
         }
     ]
 }
