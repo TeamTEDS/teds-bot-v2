@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { Client, IntentsBitField, EmbedBuilder } = require("discord.js");
+const { Client, IntentsBitField, EmbedBuilder, ActivityType } = require("discord.js");
 
 const tedsbot = new Client({
   intents: [
@@ -20,9 +20,14 @@ client = tedsbot;
 
 tedsbot.on("ready", (c) => {
   console.log(`✅ ${c.user.tag} is online`);
+
+  tedsbot.user.setActivity({
+    name: "tedps.tk",
+    type: ActivityType.Watching,
+  })
 });
 
-client.on("interactionCreate", async (interaction) => {
+tedsbot.on("interactionCreate", async (interaction) => {
   if (interaction.isChatInputCommand()) {
     if (interaction.commandName === "ping") {
       interaction.reply("Pong!");
