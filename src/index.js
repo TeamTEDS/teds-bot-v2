@@ -22,7 +22,7 @@ tedsbot.on("ready", (c) => {
   console.log(`✅ ${c.user.tag} is online`);
 });
 
-client.on("interactionCreate", (interaction) => {
+client.on("interactionCreate", async (interaction) => {
   if (interaction.isChatInputCommand()) {
     if (interaction.commandName === "ping") {
       interaction.reply("Pong!");
@@ -44,6 +44,35 @@ client.on("interactionCreate", (interaction) => {
         interaction.reply({ embeds: [embed] });
       }
   }
+
+  try {
+    if (interaction.isButton()) {
+        await interaction.deferReply({ ephemeral: true });
+    
+        const role = interaction.guild.roles.cache.get(interaction.customId);
+        if (!role) {
+            interaction.editReply ({
+                content: 'Role not found!',
+            })
+            return;
+        }
+      
+    
+      const hasRole = interaction.member.roles.cache.has(role.id);
+    
+      if (hasRole) {
+        await interaction.member.roles.remove(role);
+        await interaction.editReply(`The role ${role} has been removed.`);
+        return;
+      }
+    
+      await interaction.member.roles.add(role);
+      await interaction.editReply(`The role ${role} has been added.`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
 });
 
 tedsbot.login(process.env.TOKEN);
