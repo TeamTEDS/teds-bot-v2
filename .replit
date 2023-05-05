@@ -1,0 +1,5 @@
+run = "node src/index.js"
+onBoot = "npm install"
+compile = "src/register-commands.js"
+entrypoint = "index.js"
+hidden = ["package-lock.json", "node_modules/**"]

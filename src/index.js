@@ -27,6 +27,14 @@ client.on("interactionCreate", (interaction) => {
     if (interaction.commandName === "ping") {
       interaction.reply("Pong!");
     }
+    if (interaction.commandName === "add") {
+      const num1 = interaction.options.get("first-number").value;
+      const num2 = interaction.options.get("second-number").value;
+
+      if (num1 == 9 && num2 == 10) {
+        interaction.reply(`${num1} + ${num2} = 21`);
+      } else interaction.reply(`${num1} + ${num2} = ${num1 + num2}`);
+    }
   }
 });
 
