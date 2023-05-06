@@ -5,27 +5,27 @@ const {
 } = require('discord.js');
 
 module.exports = {
-  name: 'ban',
-  description: 'Bans a member from the server.',
+  name: 'kick',
+  description: 'Kicks a member from the server.',
   // devOnly: Boolean,
   // testOnly: Boolean,
   // deleted: Boolean,
   options: [
     {
       name: 'target-user',
-      description: 'The user to ban',
+      description: 'The user to kick',
       required: true,
       type: ApplicationCommandOptionType.Mentionable,
     },
     {
       name: 'reason',
-      description: 'The reason for the ban',
+      description: 'The reason for the kick',
       required: false,
       type: ApplicationCommandOptionType.String,
     },
   ],
-  permissionsRequired: [PermissionFlagsBits.BanMembers],
-  botPermissions: [PermissionFlagsBits.BanMembers],
+  permissionsRequired: [PermissionFlagsBits.KickMembers],
+  botPermissions: [PermissionFlagsBits.KickMembers],
 
   callback: async (tedsbot, interaction) => {
     const targetUserId = interaction.options.get('target-user').value;
@@ -46,26 +46,26 @@ module.exports = {
 
     if (targetUserRolePosition >= requestUserRolePosition) {
       await interaction.editReply(
-        "You can't ban that user as they have the same / higher role than you."
+        "You can't kick that user as they have the same / higher role than you."
       );
       return;
     }
 
     if (targetUserRolePosition >= botRolePosition) {
       await interaction.editReply(
-        'I cannot ban that user as they have the same / higher role than me.'
+        'I cannot kick that user as they have the same / higher role than me.'
       );
       return;
     }
 
-    // Ban
+    // Kick
     try {
-      await targetUser.ban({ reason });
+      await targetUser.kick(reason);
       await interaction.editReply(
-        `User ${targetUser} was banned!\nReason: ${reason}`
+        `User ${targetUser} was kicked!\nReason: ${reason}`
       );
     } catch (error) {
-      console.log(`There was an error attempting to ban a user: ${error}`);
+      console.log(`There was an error attempting to kick a user: ${error}`);
     }
   },
 };

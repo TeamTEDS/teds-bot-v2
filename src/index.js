@@ -6,6 +6,7 @@ const {
   ActivityType,
 } = require('discord.js');
 const eventHandler = require('./handlers/eventHandler');
+const mongoose = require('mongoose');
 
 const tedsbot = new Client({
   intents: [
@@ -24,63 +25,15 @@ const tedsbot = new Client({
 
 client = tedsbot;
 
-eventHandler(tedsbot);
-
-tedsbot.on('interactionCreate', async (interaction) => {
-  if (interaction.isChatInputCommand()) {
-    if (interaction.commandName === 'add') {
-      const num1 = interaction.options.get('first-number').value;
-      const num2 = interaction.options.get('second-number').value;
-
-      if (num1 == 9 && num2 == 10) {
-        interaction.reply(`${num1} + ${num2} = 21`);
-      } else interaction.reply(`${num1} + ${num2} = ${num1 + num2}`);
-    }
-    if (interaction.commandName === 'links') {
-      const embed = new EmbedBuilder()
-        .setTitle('Links')
-        .setColor('990000')
-        .addFields(
-          {
-            name: 'TeamTEDS',
-            value: `[Website](https://tedps.tk)\n[Discord](https://discord.gg/rMqJ9gsSrU)\n[Twitter](https://twitter.com/teamteds)\n[Github](https://github.com/TeamTEDS)`,
-          },
-          {
-            name: 'DovydasTEDS',
-            value: `[Twitter](https://twitter.com/dovydasteds)\n[Github](https://github.com/DovydasTEDS)\n[Reddit](https://reddit.com/user/DovydasTEDS)\n[Steam](https://steamcommunity.com/id/dovydasteds)\n[Youtube](https://youtube.com/@dovydasteds)`,
-          }
-        );
-
-      interaction.reply({ embeds: [embed] });
-    }
-  }
-
+(async () => {
   try {
-    if (interaction.isButton()) {
-      await interaction.deferReply({ ephemeral: true });
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('Connected to DB');
 
-      const role = interaction.guild.roles.cache.get(interaction.customId);
-      if (!role) {
-        interaction.editReply({
-          content: 'Role not found!',
-        });
-        return;
-      }
+    eventHandler(tedsbot);
 
-      const hasRole = interaction.member.roles.cache.has(role.id);
-
-      if (hasRole) {
-        await interaction.member.roles.remove(role);
-        await interaction.editReply(`The role ${role} has been removed.`);
-        return;
-      }
-
-      await interaction.member.roles.add(role);
-      await interaction.editReply(`The role ${role} has been added.`);
-    }
+    tedsbot.login(process.env.TOKEN);
   } catch (error) {
-    console.log(error);
+    console.log(`Error: ${error}`);
   }
-});
-
-tedsbot.login(process.env.TOKEN);
+})();

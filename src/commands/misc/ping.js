@@ -5,7 +5,13 @@ module.exports = {
   // testOnly: Boolean,
   // options: Object[],
 
-  callback: (tedsbot, interaction) => {
-    interaction.reply(`Pong! ${tedsbot.ws.ping}ms`);
+  callback: async (tedsbot, interaction) => {
+    await interaction.deferReply();
+    const reply = await interaction.fetchReply();
+    const ping = reply.createdTimestamp - interaction.createdTimestamp;
+
+    interaction.editReply(
+      `Pong! Client: ${ping}ms | Websocket: ${tedsbot.ws.ping}ms`
+    );
   },
 };

@@ -1,11 +1,15 @@
 const { testServer } = require('../../../config.json');
 const getApplicationCommands = require('../../utils/getApplicationCommands');
 const getLocalCommands = require('../../utils/getLocalCommands');
+const areCommandsDifferent = require('../../utils/areCommandsDifferent');
 
 module.exports = async (tedsbot) => {
   try {
     const localCommands = getLocalCommands();
-    const applicationCommands = getApplicationCommands(tedsbot, testServer);
+    const applicationCommands = await getApplicationCommands(
+      tedsbot,
+      testServer
+    );
 
     for (const localCommand of localCommands) {
       const { name, description, options } = localCommand;
@@ -20,6 +24,30 @@ module.exports = async (tedsbot) => {
           console.log(`🗑️ Deleted command "${name}"`);
           continue;
         }
+
+        if (areCommandsDifferent(existingCommand, localCommand)) {
+          await applicationCommands.edit(existingCommand.id, {
+            description,
+            options,
+          });
+
+          console.log(`🔁 Edited command "${name}"`);
+        }
+      } else {
+        if (localCommand.deleted) {
+          console.log(
+            `⏩ Skipped registering command "${name}" as it's set to delete.`
+          );
+          continue;
+        }
+
+        await applicationCommands.create({
+          name,
+          description,
+          options,
+        });
+
+        console.log(`👍 Registered command "${name}"`);
       }
     }
   } catch (error) {
