@@ -6,10 +6,7 @@ const areCommandsDifferent = require('../../utils/areCommandsDifferent');
 module.exports = async (tedsbot) => {
   try {
     const localCommands = getLocalCommands();
-    const applicationCommands = await getApplicationCommands(
-      tedsbot,
-      testServer
-    );
+    const applicationCommands = await getApplicationCommands(tedsbot);
 
     for (const localCommand of localCommands) {
       const { name, description, options } = localCommand;
