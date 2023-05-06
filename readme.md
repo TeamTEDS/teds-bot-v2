@@ -4,5 +4,7 @@
 New bot that has support for stable diffusion  
 ![img generation](https://i.imgur.com/BtLn7fC.png)  
 Level system  
-![level](https://i.imgur.com/iB5Vc0g.png)
+![level](https://i.imgur.com/iB5Vc0g.png)  
+   
+[Server with bot](https://tedps.tk/discord)
 
