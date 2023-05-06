@@ -1,5 +1,11 @@
 require("dotenv").config();
-const { Client, IntentsBitField, EmbedBuilder, ActivityType } = require("discord.js");
+const {
+  Client,
+  IntentsBitField,
+  EmbedBuilder,
+  ActivityType,
+} = require("discord.js");
+const eventHandler = require("./handlers/eventHandler");
 
 const tedsbot = new Client({
   intents: [
@@ -18,13 +24,15 @@ const tedsbot = new Client({
 
 client = tedsbot;
 
+eventHandler(tedsbot);
+
 tedsbot.on("ready", (c) => {
   console.log(`✅ ${c.user.tag} is online`);
 
   tedsbot.user.setActivity({
     name: "tedps.tk",
     type: ActivityType.Watching,
-  })
+  });
 });
 
 tedsbot.on("interactionCreate", async (interaction) => {
@@ -41,43 +49,50 @@ tedsbot.on("interactionCreate", async (interaction) => {
       } else interaction.reply(`${num1} + ${num2} = ${num1 + num2}`);
     }
     if (interaction.commandName === "links") {
-        const embed = new EmbedBuilder()
-            .setTitle("Links")
-            .setColor('990000')
-            .addFields({ name: 'TeamTEDS', value: `[Website](https://tedps.tk)\n[Discord](https://discord.gg/rMqJ9gsSrU)\n[Twitter](https://twitter.com/teamteds)\n[Github](https://github.com/TeamTEDS)` }, { name: 'DovydasTEDS', value: `[Twitter](https://twitter.com/dovydasteds)\n[Github](https://github.com/DovydasTEDS)\n[Reddit](https://reddit.com/user/DovydasTEDS)\n[Steam](https://steamcommunity.com/id/dovydasteds)\n[Youtube](https://youtube.com/@dovydasteds)`})
+      const embed = new EmbedBuilder()
+        .setTitle("Links")
+        .setColor("990000")
+        .addFields(
+          {
+            name: "TeamTEDS",
+            value: `[Website](https://tedps.tk)\n[Discord](https://discord.gg/rMqJ9gsSrU)\n[Twitter](https://twitter.com/teamteds)\n[Github](https://github.com/TeamTEDS)`,
+          },
+          {
+            name: "DovydasTEDS",
+            value: `[Twitter](https://twitter.com/dovydasteds)\n[Github](https://github.com/DovydasTEDS)\n[Reddit](https://reddit.com/user/DovydasTEDS)\n[Steam](https://steamcommunity.com/id/dovydasteds)\n[Youtube](https://youtube.com/@dovydasteds)`,
+          }
+        );
 
-        interaction.reply({ embeds: [embed] });
-      }
+      interaction.reply({ embeds: [embed] });
+    }
   }
 
   try {
     if (interaction.isButton()) {
-        await interaction.deferReply({ ephemeral: true });
-    
-        const role = interaction.guild.roles.cache.get(interaction.customId);
-        if (!role) {
-            interaction.editReply ({
-                content: 'Role not found!',
-            })
-            return;
-        }
-      
-    
+      await interaction.deferReply({ ephemeral: true });
+
+      const role = interaction.guild.roles.cache.get(interaction.customId);
+      if (!role) {
+        interaction.editReply({
+          content: "Role not found!",
+        });
+        return;
+      }
+
       const hasRole = interaction.member.roles.cache.has(role.id);
-    
+
       if (hasRole) {
         await interaction.member.roles.remove(role);
         await interaction.editReply(`The role ${role} has been removed.`);
         return;
       }
-    
+
       await interaction.member.roles.add(role);
       await interaction.editReply(`The role ${role} has been added.`);
     }
   } catch (error) {
     console.log(error);
   }
-
 });
 
 tedsbot.login(process.env.TOKEN);
