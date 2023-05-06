@@ -21,7 +21,6 @@ module.exports = {
   ],
 
   callback: (tedsbot, interaction) => {
-    interaction.deferReply();
     const num1 = interaction.options.get('first-number').value;
     const num2 = interaction.options.get('second-number').value;
 
