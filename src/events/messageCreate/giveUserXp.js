@@ -37,7 +37,7 @@ module.exports = async (tedsbot, message) => {
       level.xp += xpToGive;
 
       if (level.xp > calculateLevelXp(level.level)) {
-        level.xp = 0;
+        level.xp = level.xp - calculateLevelXp(level.level);
         level.level += 1;
 
         message.channel.send(
