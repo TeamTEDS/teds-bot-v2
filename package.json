@@ -2,11 +2,12 @@
   "name": "teds-bot-v2",
   "version": "1.0.0",
   "description": "A discord bot written in discord.js",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "register-cmd": "node src/register-commands.js",
-    "send-self-roles": "node src/send-message.js"
+    "send-self-roles": "node src/send-message.js",
+    "start": "node ."
   },
   "keywords": [],
   "author": "",
