@@ -1,4 +1,4 @@
-run = "node src/index.js"
+run = "npm start"
 onBoot = "npm install"
 entrypoint = "index.js"
 hidden = ["package-lock.json", "node_modules/**"]
